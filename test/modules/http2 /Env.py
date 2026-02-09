@@ -4,13 +4,11 @@ import os
 import subprocess
 from shutil import copyfile
 from typing import Dict, Any
-
 from pyhttpd.certs import CertificateSpec
 from pyhttpd.conf import HttpdConf
 from pyhttpd.env import HttpdTestEnv, HttpdTestSetup
 
 log = logging.getLogger(__WEB4__)
-
 
 class H2TestSetup(HttpdTestSetup):
 
