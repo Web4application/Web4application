@@ -15,3 +15,6 @@ export HTTPD_PATH=/path/to/install/bin/httpd
 pytest -v test/modules/http2
 # Build the production Flutter web app
 flutter build web --release
+git add .github/workflows/build.yml
+git commit -m "Add Web4 Hybrid CI workflow"
+git push origin main
