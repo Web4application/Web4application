@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubu-Hai Web ✨</title>
+  
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="data:application/manifest+json,{'name':'Kubu-Hai Web','short_name':'KubuHai','display':'standalone','background_color':'#0f0f0f','theme_color':'#00d8ff','icons':[{'src':'icon-192.png','sizes':'192x192','type':'image/png'}]}">
+
+  <style>
+    body { background: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 20px; transition: 0.3s; }
+    .container { max-width: 900px; margin: 0 auto; }
+    iframe { width: 100%; border: 1px solid #333; border-radius: 8px; margin-bottom: 25px; background: #fff; }
+    h2 { color: #00d8ff; }
+    a { color: #00d8ff; text-decoration: none; font-weight: bold; }
+  </style>
+
+  <script>
+    // Register the Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('PWA Ready:', reg.scope));
+      });
+    }
+
+    // Reconfiguration Bridge: Listen for messages from iframes
+    window.addEventListener("message", (event) => {
+      if (event.data.type === "reconfigure") {
+        document.body.style.backgroundColor = event.data.color || "#0f0f0f";
+        console.log("Site reconfigured!");
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Kubu-Hai Web ✨</h1>
+
+    <!-- SlideShare Embed -->
+    <h2>Aura Paperwork</h2>
+    <iframe src="https://www.slideshare.net" height="485" frameborder="0" allowfullscreen></iframe>
+    <p><a href="https://www.slideshare.net" target="_blank">View on SlideShare</a></p>
+
+    <hr style="border: 0.5px solid #333; margin: 40px 0;">
+
+    <!-- Scribd Embed -->
+    <h2>Codigoc Simulink</h2>
+    <iframe class="scribd_iframe_embed" src="https://www.scribd.com" height="800" frameborder="0"></iframe>
+    <p><a href="https://www.scribd.com" target="_blank">View on Scribd</a></p>
+  </div>
+</body>
+</html>
