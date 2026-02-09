@@ -23,7 +23,7 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: gh-pages
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }} # Keep this as-is
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  # Uploads the entire repository root
+          path: 'Docs'  # Uploads the entire repository root
       - name: Deploy to GitHub Pages
         id: deployment # This ID MUST match the 'steps.deployment' in the url above
-        uses: actions/deploy-pages@v4
+         uses: actions/deploy-pages@3
