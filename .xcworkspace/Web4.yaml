@@ -1,0 +1,75 @@
+name: Web4 Hybrid CI (Web + iOS)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Stage 1: Validate the Web4 Next.js Core
+  web-core-build:
+    name: Build Web Source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Production Build
+        run: npm run build
+
+  # Stage 2: Build and Analyze the iOS Wrapper
+  ios-native-build:
+    name: Build & Analyze iOS
+    needs: web-core-build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+
+      - name: Set Default Scheme
+        id: get_scheme
+        run: |
+          # Finds the first scheme available in the project
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo "SCHEME=$default" >> $GITHUB_ENV
+          echo "Using scheme: $default"
+
+      - name: Build and Analyze
+        run: |
+          # Detect if using Workspace or Project
+          if [ -d *.xcworkspace ]; then
+            FILE_TYPE="-workspace"
+            FILE_PATH=$(ls -d *.xcworkspace | head -n 1)
+          else
+            FILE_TYPE="-project"
+            FILE_PATH=$(ls -d *.xcodeproj | head -n 1)
+          fi
+
+          # Execute Build & Analysis
+          xcodebuild clean build analyze \
+            $FILE_TYPE "$FILE_PATH" \
+            -scheme "${{ env.SCHEME }}" \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -resultBundlePath BuildResults.xcresult \
+            | xcbeautify && exit ${PIPESTATUS[0]}
+
+      - name: Upload Analysis Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web4-ios-analysis
+          path: BuildResults.xcresult
