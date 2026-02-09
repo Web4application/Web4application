@@ -1,0 +1,13 @@
+{
+  "name": "Web4 Kubu-Hai Portal",
+  "short_name": "Web4App",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#00d8ff",
+  "description": "Next-gen Flutter portal for Web4 applications.",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
