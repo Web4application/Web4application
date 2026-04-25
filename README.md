@@ -1,7 +1,9 @@
-## web4-application
----
+# web4application
 
-``` bash
+This repository [ org] can be used to build a variety of web applications, depending on the technologies and frameworks it incorporates. Here are some examples of web applications you might develop using this repository:
+
+
+```bash
 +----------------------------------------------------+
 |                      Web4                          |
 |                                                    |
@@ -39,15 +41,9 @@
 |  | - Transactions        |                      | |
 |  | - Games               |                      | |
 |  | - Marketplace         |                      | |
-|  +-----------------------+                      | |
-|                                   ---
-```
-
-              |
-              
-```yaml
-+----------------------------------------------------+
-│
+|  +-----------------------+            
+|       |«```code»|
+|  +----------------------------------------------------+
 ├── /src
 │   ├── /modules
 │   │   ├── /auth
@@ -82,13 +78,7 @@
 │
 ├── package.json
 └── README.md
-
-
 ```
-
-## Web4 
-
-This repository can be used to build a variety of web applications, depending on the technologies and frameworks it incorporates. Here are some examples of web applications you might develop using this repository:
 
 ## E-commerce Platforms
 
@@ -107,6 +97,7 @@ Build platforms for social networking, including features like user profiles, me
 Set up blogs where users can write, edit, and publish articles, with options for comments and social sharing.
 
 Create online learning environments with courses, quizzes, and student progress tracking.
+
 ## PROJECCT MANAGEMENT 
 it has Developed tools for managing projects, including task assignments, progress tracking, and collaboration features.
 
