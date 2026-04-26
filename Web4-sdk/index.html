@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Web4 Swarm AI OS</title>
+<script src="flutter.js" defer></script>
+<style>
+body {
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0f0f0f;
+  color:#fff;
+  font-family:sans-serif;
+}
+.card {
+  text-align:center;
+  padding:30px;
+  width:340px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+}
+.loader {
+  width:28px;
+  height:28px;
+  border:3px solid #fff;
+  border-top-color:#00d8ff;
+  border-radius:50%;
+  margin:20px auto;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+button {
+  margin-top:10px;
+  border:1px solid #00d8ff;
+  background:transparent;
+  color:#00d8ff;
+  padding:10px 16px;
+  border-radius:20px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>🌍 Web4 Swarm AI OS</h2>
+  <p id="status">Booting global cognition...</p>
+  <div id="loader" class="loader"></div>
+  <button onclick="voice()">🎙 Voice</button>
+</div>
+<script>
+/* =========================
+   🧠 MEMORY LAYER
+========================= */
+class MemoryDB {
+  async init(){
+    return new Promise(res=>{
+      const req=indexedDB.open("web4",1);
+      req.onupgradeneeded=()=>req.result.createObjectStore("m",{keyPath:"id"});
+      req.onsuccess=()=>res(req.result);
+    });
+  }
+  async save(data){
+    const db=await this.init();
+    const tx=db.transaction("m","readwrite");
+    tx.objectStore("m").put({id:Date.now(),...data});
+  }
+  async all(){
+    const db=await this.init();
+    return new Promise(r=>{
+      const tx=db.transaction("m","readonly");
+      const req=tx.objectStore("m").getAll();
+      req.onsuccess=()=>r(req.result);
+    });
+  }
+}
+/* =========================
+   🧠 WEBGPU BRAIN (FALLBACK CORE)
+========================= */
+class Brain {
+  async think(input, context, policy){
+    if(input.includes("time"))
+      return "Time: " + new Date().toISOString();
+    if(context.length > 5)
+      return "Pattern detected in swarm memory.";
+    return "Processing: " + input;
+  }
+}
+/* =========================
+   🔌 PLUGINS
+========================= */
+class Plugin {
+  constructor(match, run){
+    this.match=match;
+    this.run=run;
+  }
+}
+/* =========================
+   🌐 SWARM BUS (LOCAL + WEBRTC)
+========================= */
+class SwarmBus {
+  constructor(id){
+    this.id=id;
+    this.peers=[];
+    this.channel=new BroadcastChannel("swarm");
+  }
+  broadcast(data){
+    this.channel.postMessage({from:this.id,data});
+  }
+  listen(cb){
+    this.channel.onmessage=e=>cb(e.data);
+  }
+}
+/* =========================
+   🌍 WEBRTC MESH (SIMPLIFIED)
+========================= */
+class Mesh {
+  constructor(id){
+    this.id=id;
+    this.peers=new Map();
+  }
+  connect(signaling){
+    this.signaling=signaling;
+  }
+  send(msg){
+    this.signaling?.postMessage(msg);
+  }
+}
+/* =========================
+   ⛓ BLOCKCHAIN MEMORY (SIMPLIFIED)
+========================= */
+class Chain {
+  async hash(data){
+    const buf=await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(JSON.stringify(data))
+    );
+    return [...new Uint8Array(buf)].map(b=>b.toString(16)).join("");
+  }
+  async store(hash,data){
+    console.log("⛓ on-chain:",hash,data);
+  }
+}
+/* =========================
+   🧠 AGENT CORE
+========================= */
+class Agent {
+  constructor(brain,memory,plugins){
+    this.brain=brain;
+    this.memory=memory;
+    this.plugins=plugins;
+  }
+  async think(input){
+    for(const p of this.plugins){
+      if(p.match(input)) return await p.run(input);
+    }
+    const ctx=await this.memory.all();
+    const out=await this.brain.think(input,ctx,{});
+    await this.memory.save({type:"thought",input,output:out});
+    return out;
+  }
+}
+/* =========================
+   🧬 SELF IMPROVER
+========================= */
+class SelfImprover {
+  constructor(brain){
+    this.brain=brain;
+    this.policy={mode:"balanced"};
+  }
+  adjust(logs){
+    if(logs.length>10)
+      this.policy.mode="deep";
+    if(logs.length<5)
+      this.policy.mode="fast";
+  }
+  get(){return this.policy;}
+}
+/* =========================
+   🌍 SWARM + CONSENSUS
+========================= */
+class Swarm {
+  constructor(agent,bus,chain,memory){
+    this.agent=agent;
+    this.bus=bus;
+    this.chain=chain;
+    this.memory=memory;
+    this.buffer=[];
+  }
+  async run(input){
+    const res=await this.agent.think(input);
+    this.bus.broadcast({type:"thought",res});
+    const hash=await this.chain.hash(res);
+    await this.chain.store(hash,res);
+    this.buffer.push(res);
+    return this.consensus();
+  }
+  consensus(){
+    if(this.buffer.length<3) return null;
+    const best=this.buffer.sort((a,b)=>b.length-a.length)[0];
+    this.buffer=[];
+    return best;
+  }
+}
+/* =========================
+   🎙 VOICE
+========================= */
+function voice(){
+  speechSynthesis.speak(
+    new SpeechSynthesisUtterance("Swarm AI active")
+  );
+}
+/* =========================
+   🚀 BOOT SYSTEM
+========================= */
+const id=crypto.randomUUID();
+const memory=new MemoryDB();
+const brain=new Brain();
+const bus=new SwarmBus(id);
+const mesh=new Mesh(id);
+const chain=new Chain();
+const plugins=[
+  new Plugin(t=>t.includes("voice"),async()=>voice()),
+  new Plugin(t=>t.includes("time"),async()=>new Date().toISOString())
+];
+const agent=new Agent(brain,memory,plugins);
+const swarm=new Swarm(agent,bus,chain,memory);
+const improver=new SelfImprover(brain);
+/* local swarm listener */
+bus.listen(async msg=>{
+  await memory.save({type:"swarm",msg});
+});
+async function boot(){
+  await memory.init();
+  setInterval(async()=>{
+    const input="analyze global swarm state";
+    const out=await swarm.run(input);
+    const logs=await memory.all();
+    improver.adjust(logs);
+    console.log("🌍 SWARM:",out);
+  },6000);
+  document.getElementById("status").innerText="Swarm Online";
+  document.getElementById("loader").style.display="none";
+}
+window.addEventListener("load",boot);
+</script>
+</body>
+</html>
