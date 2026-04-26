@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web4-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: web4
+  namespace: web4-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: web4
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - services
+      - endpoints
+      - namespaces
+      - configmaps
+      - events
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - replicasets
+      - statefulsets
+    verbs: ["get", "list", "watch"]
+
+  - nonResourceURLs:
+      - /healthz
+      - /livez
+      - /readyz
+      - /metrics
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: web4-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: web4
+subjects:
+  - kind: ServiceAccount
+    name: web4
+    namespace: web4-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web4-engine
+  namespace: web4-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web4-engine
+  template:
+    metadata:
+      labels:
+        app: web4-engine
+    spec:
+      serviceAccountName: web4
+      containers:
+        - name: engine
+          image: web4/engine:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MODE
+              value: "production"
+            - name: REDIS_URL
+              value: "redis://web4-redis:6379"
+            - name: KAFKA_BROKERS
+              value: "web4-kafka:9092"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web4-api
+  namespace: web4-system
+spec:
+  selector:
+    app: web4-engine
+  ports:
+    - port: 80
+      targetPort: 8080
