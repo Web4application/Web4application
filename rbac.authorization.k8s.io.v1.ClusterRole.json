@@ -1,83 +1,174 @@
 {
-  "kind": "ClusterRole",
-  "apiVersion": "rbac.authorization.k8s.io/v1",
-  "metadata": {
-    "name": "nameValue",
-    "generateName": "generateNameValue",
-    "namespace": "namespaceValue",
-    "selfLink": "selfLinkValue",
-    "uid": "uidValue",
-    "resourceVersion": "resourceVersionValue",
-    "generation": 7,
-    "creationTimestamp": "2008-01-01T01:01:01Z",
-    "deletionTimestamp": "2009-01-01T01:01:01Z",
-    "deletionGracePeriodSeconds": 10,
-    "labels": {
-      "labelsKey": "labelsValue"
-    },
-    "annotations": {
-      "annotationsKey": "annotationsValue"
-    },
-    "ownerReferences": [
-      {
-        "apiVersion": "apiVersionValue",
-        "kind": "kindValue",
-        "name": "nameValue",
-        "uid": "uidValue",
-        "controller": true,
-        "blockOwnerDeletion": true
-      }
-    ],
-    "finalizers": [
-      "finalizersValue"
-    ],
-    "managedFields": [
-      {
-        "manager": "managerValue",
-        "operation": "operationValue",
-        "apiVersion": "apiVersionValue",
-        "time": "2004-01-01T01:01:01Z",
-        "fieldsType": "fieldsTypeValue",
-        "fieldsV1": {},
-        "subresource": "subresourceValue"
-      }
-    ]
-  },
-  "rules": [
-    {
-      "verbs": [
-        "verbsValue"
-      ],
-      "apiGroups": [
-        "apiGroupsValue"
-      ],
-      "resources": [
-        "resourcesValue"
-      ],
-      "resourceNames": [
-        "resourceNamesValue"
-      ],
-      "nonResourceURLs": [
-        "nonResourceURLsValue"
-      ]
-    }
-  ],
-  "aggregationRule": {
-    "clusterRoleSelectors": [
-      {
-        "matchLabels": {
-          "matchLabelsKey": "matchLabelsValue"
+  "system": {
+    "name": "web4-agent-runtime-engine",
+    "version": "1.0.0",
+    "description": "Unified AI agent runtime combining Node.js orchestration, Rust execution gateway, blockchain identity, and Kubernetes RBAC enforcement",
+
+    "layers": {
+      "ai_orchestration_layer": {
+        "runtime": "node.js",
+        "responsibility": "agent reasoning, intent generation, workflow orchestration",
+        "components": [
+          "agent-runtime",
+          "intent-engine",
+          "api-server"
+        ],
+        "flow": "generate_intent -> verify_permission -> send_to_executor"
+      },
+
+      "blockchain_identity_layer": {
+        "responsibility": "identity verification and permission granting",
+        "components": [
+          "did_registry",
+          "permission_contracts",
+          "reputation_system"
+        ],
+        "example_identity": {
+          "did": "did:web4:agent:dev01",
+          "wallet": "0xABC123DEF456",
+          "reputation": 87
         },
-        "matchExpressions": [
-          {
-            "key": "keyValue",
-            "operator": "operatorValue",
-            "values": [
-              "valuesValue"
-            ]
-          }
+        "permission_check": {
+          "endpoint": "/check",
+          "result": "allowed_or_denied"
+        }
+      },
+
+      "execution_gateway_layer": {
+        "runtime": "rust",
+        "responsibility": "secure execution, RBAC enforcement, kubernetes API access",
+        "components": [
+          "rbac_engine",
+          "kubernetes_client",
+          "execution_router"
+        ],
+        "policy": "deny_by_default"
+      },
+
+      "infrastructure_layer": {
+        "platform": "kubernetes",
+        "responsibility": "compute execution environment",
+        "operations": [
+          "pod_scheduling",
+          "deployment_creation",
+          "service_management"
         ]
       }
-    ]
+    },
+
+    "cluster_role": {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "ClusterRole",
+      "metadata": {
+        "name": "web4-agent-role"
+      },
+      "rules": [
+        {
+          "apiGroups": [""],
+          "resources": ["pods"],
+          "verbs": ["get", "list", "watch"]
+        },
+        {
+          "apiGroups": ["apps"],
+          "resources": ["deployments"],
+          "verbs": ["create", "update", "patch"]
+        }
+      ]
+    },
+
+    "runtime_flow": [
+      {
+        "step": 1,
+        "name": "intent_generation",
+        "runtime": "node.js",
+        "input": "agent request",
+        "output": {
+          "intent": {
+            "action": "create_deployment",
+            "resource": "api-service-v2",
+            "cluster": "production"
+          }
+        }
+      },
+
+      {
+        "step": 2,
+        "name": "blockchain_verification",
+        "runtime": "blockchain_gateway",
+        "input": "agent_did + intent",
+        "output": {
+          "permission_granted": true,
+          "expiresAt": 1760000000
+        }
+      },
+
+      {
+        "step": 3,
+        "name": "execution_validation",
+        "runtime": "rust_executor",
+        "input": "intent + permission",
+        "policy": "rbac_enforcement",
+        "decision_engine": "clusterrole_validation"
+      },
+
+      {
+        "step": 4,
+        "name": "kubernetes_execution",
+        "platform": "kubernetes",
+        "action": "deployment_created",
+        "resource": "api-service-v2"
+      },
+
+      {
+        "step": 5,
+        "name": "audit_logging",
+        "output": {
+          "type": "immutable_log",
+          "storage": "blockchain",
+          "event": "deployment_success"
+        }
+      }
+    ],
+
+    "node_runtime": {
+      "role": "orchestrator",
+      "stack": "express + typescript",
+      "functions": [
+        "generateIntent",
+        "verifyPermission",
+        "sendToRustExecutor"
+      ]
+    },
+
+    "rust_runtime": {
+      "role": "secure execution gateway",
+      "stack": "actix-web",
+      "functions": [
+        "rbac_check",
+        "execute_kubernetes_action",
+        "deny_by_default_policy"
+      ]
+    },
+
+    "security_model": {
+      "principles": [
+        "ai_is_never_trusted_directly",
+        "all_actions_must_be_verified_on_chain",
+        "rbac_is_final_execution_gate",
+        "least_privilege_enforcement",
+        "ephemeral_permissions_only"
+      ],
+      "trust_flow": [
+        "AI generates intent",
+        "Blockchain authorizes identity",
+        "Rust enforces policy",
+        "Kubernetes executes workload"
+      ]
+    },
+
+    "system_identity": {
+      "paradigm": "decentralized autonomous compute network",
+      "definition": "AI agents operate as constrained actors inside a permissioned execution mesh governed by blockchain identity and RBAC enforcement"
+    }
   }
 }
