@@ -1,0 +1,152 @@
+{
+  "system": {
+    "name": "web4-agent-operating-system",
+    "version": "1.0.0",
+
+    "core_principle": "AI generates intent, blockchain authorizes identity, Rust enforces rules, Kubernetes executes workloads",
+
+    "layers": {
+      "identity_layer": {
+        "type": "blockchain",
+        "components": [
+          "DIDRegistry Smart Contract",
+          "Wallet Authentication (MetaMask-style)"
+        ],
+        "identity_model": {
+          "did_format": "did:ethr:{wallet}",
+          "wallet": "0xROOT_WALLET",
+          "reputation_system": true
+        }
+      },
+
+      "agent_layer": {
+        "runtime": "node.js",
+        "role": "AI orchestration engine",
+        "components": [
+          "intent_generator",
+          "agent_runtime",
+          "workflow_orchestrator"
+        ],
+        "agent_example": {
+          "id": "dev-agent-01",
+          "did": "did:ethr:0xROOT",
+          "capabilities": ["deploy", "monitor", "scale"]
+        }
+      },
+
+      "authorization_layer": {
+        "type": "blockchain_gateway",
+        "role": "permission validation",
+        "logic": "verify DID + reputation + wallet signature",
+        "result": ["allow", "deny"]
+      },
+
+      "execution_layer": {
+        "runtime": "rust",
+        "role": "secure enforcement gateway",
+        "functions": [
+          "rbac_check",
+          "intent_validation",
+          "kubernetes_execution"
+        ],
+        "default_policy": "deny_by_default"
+      },
+
+      "infrastructure_layer": {
+        "platform": "kubernetes",
+        "responsibility": "container orchestration + compute execution",
+        "operations": [
+          "pods",
+          "deployments",
+          "services"
+        ]
+      }
+    },
+
+    "smart_contracts": {
+      "DIDRegistry": {
+        "functions": [
+          "registerDID",
+          "getIdentity",
+          "updateReputation"
+        ],
+        "stores": [
+          "wallet",
+          "did",
+          "reputation",
+          "status"
+        ]
+      }
+    },
+
+    "runtime_services": {
+      "node_runtime": {
+        "flow": [
+          "generate_intent",
+          "check_permission",
+          "send_to_executor"
+        ],
+        "api": "POST /agent/run"
+      },
+
+      "blockchain_gateway": {
+        "flow": [
+          "verify_did",
+          "validate_wallet",
+          "return_permission"
+        ]
+      },
+
+      "rust_executor": {
+        "flow": [
+          "rbac_validation",
+          "kubernetes_execution",
+          "return_result"
+        ]
+      }
+    },
+
+    "kubernetes_rbac": {
+      "ClusterRole": {
+        "apiVersion": "rbac.authorization.k8s.io/v1",
+        "rules": [
+          {
+            "apiGroups": [""],
+            "resources": ["pods"],
+            "verbs": ["get", "list", "watch"]
+          },
+          {
+            "apiGroups": ["apps"],
+            "resources": ["deployments"],
+            "verbs": ["create", "update", "patch"]
+          }
+        ]
+      },
+
+      "Binding": {
+        "subjects": ["did:ethr:0xROOT"],
+        "role": "web4-agent-role"
+      }
+    },
+
+    "execution_flow": [
+      "1. AI agent generates intent",
+      "2. Node runtime sends to blockchain gateway",
+      "3. DID + wallet verified",
+      "4. Permission granted or denied",
+      "5. Rust executor enforces RBAC",
+      "6. Kubernetes executes workload",
+      "7. Audit logged"
+    ],
+
+    "security_model": {
+      "rules": [
+        "AI is never trusted directly",
+        "All actions must be blockchain verified",
+        "RBAC is final execution gate",
+        "Wallet is root authority",
+        "Permissions are ephemeral"
+      ]
+    }
+  }
+}
