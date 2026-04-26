@@ -1,5 +1,43 @@
 
-
+web4-os/
+│
+├── kernel/
+│   ├── service-worker.js
+│   ├── fetch-engine.js
+│   ├── boot.js
+│
+├── ai/
+│   ├── decision-engine.js
+│
+├── memory/
+│   ├── memory.js
+│
+├── sync/
+│   ├── sync-daemon.js
+│
+├── chain/
+│   ├── provider.js
+│
+├── ipfs/
+│   ├── client.js
+│
+├── bus/
+│   ├── event-bus.js
+│
+├── public/
+│   ├── index.html
+│   ├── manifest.json
+│   ├── flutter.js
+│
+├── scripts/
+│   ├── build-manifest.js
+│   ├── deploy.js
+│   ├── pin-ipfs.js
+│
+├── web4.config.js
+├── package.json
+├── README.md
+└── .gitignore
 
 
 ⸻
