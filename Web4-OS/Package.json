@@ -1,0 +1,15 @@
+{
+  "name": "web4-os",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-manifest.js",
+    "pin": "node scripts/pin-ipfs.js",
+    "deploy": "node scripts/deploy.js",
+    "start": "node kernel/boot.js"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0",
+    "ipfs-http-client": "^60.0.0"
+  }
+}
