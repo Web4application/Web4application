@@ -1,4 +1,4 @@
-.. _web4application:_
+# web4application
 
 This repository [ org] can be used to build a variety of web applications, depending on the technologies and frameworks it incorporates. Here are some  of web applications  
 developed using this repository:
