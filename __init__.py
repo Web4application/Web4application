@@ -24,7 +24,6 @@ def print_welcome_message():
 print("Welcome to the Kubu-Hai AI package!")
 
 print_welcome_message()
-
 # Importing necessary modules from the package
 from .ai_kubu import some_function
 from .ai_main import main_function
