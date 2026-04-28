@@ -1,14 +1,12 @@
+// web/flutter_bootstrap.js
 {{flutter_js}}
 {{flutter_build_config}}
 
 _flutter.loader.load({
   onEntrypointLoaded: async function(engineInitializer) {
-    // Customize your initialization (e.g., set the renderer)
     const appRunner = await engineInitializer.initializeEngine({
-      renderer: "canvaskit", // Options: "canvaskit" or "html"
+      renderer: "canvaskit", // Critical for 3D/AI graphics performance
     });
-
-    console.log("Web application ready!");
     await appRunner.runApp();
   }
 });
