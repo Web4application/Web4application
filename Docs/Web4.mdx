@@ -1,4 +1,4 @@
-# WEB4 
+# WEB4  
 1. clean production repo structure (Web4 SDK style)
 2. full deploy + CI/CD pipeline
 3. exactly how to save, persist, and manage everything locally + on-chain/IPFS
@@ -9,7 +9,7 @@
 
 You don’t keep this as random scripts anymore. You formalize it.
 
-```bash
+```code
 web4-sdk/
 │
 ├── core/
@@ -56,7 +56,7 @@ a framework, not a project
 ⚙️ 2. CORE SDK EXPORT (HOW EVERYTHING CONNECTS)
 
 You unify everything through one entry point:
-```js
+```javascript
 import { installSW } from "./core/service-worker.js";
 import { startSync } from "./core/sync-engine.js";
 export function initWeb4() {
@@ -137,6 +137,9 @@ jobs:
       - run: node scripts/build-manifest.js
       - run: node scripts/pin-ipfs.js
       - run: node scripts/deploy.js
+dependencies:
+  flutter_js: ^0.8.0
+
 ```
 Now every push = full Web4 release.
 
