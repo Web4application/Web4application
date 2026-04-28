@@ -1,0 +1,5 @@
+dependencies:
+  flutter_ipfs: ^0.0.2         # Decentralized storage
+  google_generative_ai: ^0.4.0 # AI Integration
+  model_viewer_plus: ^1.8.0    # 3D Graphics
+  http: ^1.1.0                 # API/Gateway communication
