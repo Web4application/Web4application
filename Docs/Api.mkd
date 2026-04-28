@@ -1,0 +1,94 @@
+# web4 API
+
+Our REST API service has five distinct types of controllers:
+
+1. [Authentication](https://freename-1.gitbook.io/freename-apis/authentication)
+2. [Zones](https://freename-1.gitbook.io/freename-apis/web2-web3-mirroring-api/zone)
+3. [Users](https://freename-1.gitbook.io/freename-apis/web2-web3-mirroring-api/user)
+4. [Records](https://freename-1.gitbook.io/freename-apis/web2-web3-mirroring-api/record)
+5. [Profile Registries](https://freename-1.gitbook.io/freename-apis/web2-web3-mirroring-api/profile-registry)
+
+### Authentication <a href="#authentication" id="authentication"></a>
+
+<figure><img src="https://573490169-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F29KBgxwkqoE7VplHJUQ8%2Fuploads%2FZ4FMTivnR10NIecajhem%2FScreenshot%202024-05-28%20at%2015.40.07.png?alt=media&#x26;token=97ad2c46-e353-4ac8-8a2f-add38f8413b4" alt="" width="563"><figcaption><p>Authentication Flow</p></figcaption></figure>
+
+For the authentication we only have a POST request used to log in the user with the right credentials in order to obtain an access token. The request user body includes a username and password. The authentication token is valid for one month.
+
+| **Type** | **Description**                                                                                                        |
+| -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| POST     | <p>Logs in the user in order to obtain an access token. The request body includes a username and password.</p><p> </p> |
+
+#### Zones <a href="#zones" id="zones"></a>
+
+Within the zone, our services encompass six GET requests, along with a single POST, PUT, and PATCH request each.
+
+| **Type** | **Description**                                                                                                                                                                                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GET      | <p>Retrieve the following information:</p><ul><li>a zone by UUID</li><li>all zones</li><li>all zones of logged user</li><li>zones with a specific name, status, or associated profile registry</li><li>check name availability</li><li>search zone based on criteria</li></ul> |
+| POST     | Creates a zone using the provided information.                                                                                                                                                                                                                                 |
+| PUT      | Update a zone using the provided information.                                                                                                                                                                                                                                  |
+| PATCH    | Transfer zone from one registrar/registrant to another.                                                                                                                                                                                                                        |
+
+As of now, the zone stores information regarding its status. We currently recognize four status types:
+
+* OK - The zone is operational.
+* INACTIVE - The zone is not in operation.
+* PENDING - The zone is expiring and will soon become inactive.
+* ERROR - Denotes an issue with the zone's operation.
+
+### Users <a href="#users" id="users"></a>
+
+Users can access only four GET requests, as we only allow to read information of a user from our api, while all other settings are handled through Auth0.
+
+| **Type** | **Description**                                                                                                                               |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET      | <ul><li>Fetch user by uuid</li><li>Fetch list of users</li><li>Fetch current logged in user</li><li>Fetch user by username and role</li></ul> |
+
+### Records <a href="#records" id="records"></a>
+
+For records we have one of GET, POST, PUT and DELETE request.
+
+| **Type** | **Description**                                                                                     |
+| -------- | --------------------------------------------------------------------------------------------------- |
+| GET      | Fetch a record by UUID.                                                                             |
+| POST     | Create records using the provided zone and a list of records (a record can't exist without a zone). |
+| PUT      | Update records based on the provided data.                                                          |
+| DELETE   | Delete a record by UUID.                                                                            |
+
+### Profile registries <a href="#profile-registries" id="profile-registries"></a>
+
+In this case we have three GET requests, one POST and one PUT request.
+
+| **Type** | **Description**                                                                                                                                       |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET      | <p>Fetch the following information:</p><ul><li>profile registries by uuid</li><li>all profile registries</li><li>profile registries by type</li></ul> |
+| POST     | Create a profile registry using the provided data                                                                                                     |
+| PUT      | Update a profile registry by uuid using the provided data                                                                                             |
+
+### **Pagination**
+
+The API's default settings are as follows:
+
+* Page number: 0
+* Page size: 25
+* Sorting: by name
+
+Users have the flexibility to customise and adjust these values to meet their specific requirements. For instance, they can pick the first page and set the amount of pages to retrieve to a lower or higher number, as well as decide a different type of ordering (such as by creation date).
+
+
+---
+
+# Agent Instructions: Querying This Documentation
+
+If you need additional information that is not directly available in this page, you can query the documentation dynamically by asking a question.
+
+Perform an HTTP GET request on the current page URL with the `ask` query parameter:
+
+```
+GET https://web4.gitbook.io/bds-apis/web4.md?ask=<question>
+```
+
+The question should be specific, self-contained, and written in natural language.
+The response will contain a direct answer to the question and relevant excerpts and sources from the documentation.
+
+Use this mechanism when the answer is not explicitly present in the current page, you need clarification or additional context, or you want to retrieve related documentation sections.
