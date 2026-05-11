@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WEB4 Navbar</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#050816;
+    min-height:200vh;
+    color:white;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:75px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 7%;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,0.08);
+
+    z-index:1000;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo{
+    font-size:1.7rem;
+    font-weight:900;
+    letter-spacing:2px;
+
+    background:linear-gradient(
+        90deg,
+        #00f0ff,
+        #7a5cff,
+        #ff00c8
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:glow 4s linear infinite;
+}
+
+@keyframes glow{
+    0%{
+        filter:drop-shadow(0 0 5px #00f0ff);
+    }
+
+    50%{
+        filter:drop-shadow(0 0 18px #7a5cff);
+    }
+
+    100%{
+        filter:drop-shadow(0 0 5px #ff00c8);
+    }
+}
+
+/* =========================
+   NAV LINKS
+========================= */
+
+.nav-links{
+    display:flex;
+    gap:35px;
+}
+
+.nav-links a{
+    position:relative;
+
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    letter-spacing:0.5px;
+
+    transition:0.3s ease;
+}
+
+/* Animated underline */
+
+.nav-links a::after{
+    content:'';
+
+    position:absolute;
+    left:0;
+    bottom:-8px;
+
+    width:0%;
+    height:2px;
+
+    background:linear-gradient(
+        90deg,
+        #00f0ff,
+        #ff00c8
+    );
+
+    transition:0.35s ease;
+}
+
+.nav-links a:hover{
+    color:#00f0ff;
+    text-shadow:0 0 12px #00f0ff;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+/* =========================
+   HAMBURGER
+========================= */
+
+.menu-btn{
+    display:none;
+    flex-direction:column;
+    cursor:pointer;
+    gap:5px;
+}
+
+.menu-btn span{
+    width:26px;
+    height:3px;
+
+    background:white;
+    border-radius:10px;
+
+    transition:0.3s;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:850px){
+
+    .menu-btn{
+        display:flex;
+    }
+
+    .nav-links{
+        position:absolute;
+
+        top:75px;
+        right:-100%;
+
+        width:260px;
+        height:calc(100vh - 75px);
+
+        background:rgba(5,8,22,0.96);
+
+        backdrop-filter:blur(15px);
+
+        flex-direction:column;
+        align-items:center;
+        justify-content:flex-start;
+
+        padding-top:50px;
+
+        transition:0.4s ease;
+    }
+
+    .nav-links.active{
+        right:0;
+    }
+
+}
+
+.hero{
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+    padding:20px;
+}
+
+.hero h1{
+    font-size:4rem;
+
+    background:linear-gradient(
+        90deg,
+        #00f0ff,
+        #7a5cff,
+        #ff00c8
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:20px;
+}
+
+.hero p{
+    max-width:700px;
+    line-height:1.8;
+    color:#c7d0ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        WEB4
+    </div>
+
+    <div class="nav-links" id="navLinks">
+
+        <a href="#main">Home</a>
+
+        <a href="#projects">Projects</a>
+
+        <a href="#news">News</a>
+
+        <a href="https://github.com/QUBUHUB-incs"
+           target="_blank"
+           rel="noopener noreferrer">
+
+           GitHub
+
+        </a>
+
+    </div>
+
+    <!-- Hamburger -->
+
+    <div class="menu-btn" id="menuBtn">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+</nav>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="main">
+
+    <h1>WEB4 FUTURE</h1>
+
+    <p>
+        AI. Blockchain. IoT. Quantum-scale networking.
+        This is not just another website —
+        this is a futuristic Web4 ecosystem interface.
+    </p>
+
+</section>
+
+<script>
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+menuBtn.addEventListener("click", () => {
+
+    navLinks.classList.toggle("active");
+
+});
+
+</script>
+
+</body>
+</html>
