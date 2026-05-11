@@ -1,7 +1,521 @@
-<html>
-  <body>
-    <script>
-      {{flutter_bootstrap.js}}
-    </script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WEB4 Dashboard</title>
+
+<!-- Flutter -->
+<script>
+{{flutter_bootstrap.js}}
+</script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Bootstrap -->
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style>
+
+:root{
+    --primary:#7dcfff;
+    --secondary:#bb9af7;
+    --glass-bg:rgba(15,15,26,0.45);
+    --glass-border:rgba(255,255,255,0.12);
+    --glass-blur:18px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#050508;
+    color:white;
+    font-family:system-ui,sans-serif;
+    overflow-x:hidden;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:90%;
+    max-width:1200px;
+
+    padding:16px 28px;
+
+    background:var(--glass-bg);
+    backdrop-filter:blur(var(--glass-blur));
+
+    border:1px solid var(--glass-border);
+    border-radius:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1000;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-weight:900;
+    letter-spacing:2px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    opacity:0.75;
+    transition:0.3s;
+    font-weight:600;
+}
+
+.nav-links a:hover{
+    opacity:1;
+    color:var(--primary);
+    text-shadow:0 0 12px var(--primary);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.dashboard{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+    width:90%;
+    max-width:1200px;
+
+    margin:150px auto 120px auto;
+}
+
+/* =========================
+   GLASS PANELS
+========================= */
+
+.glass-panel{
+    padding:40px;
+
+    border-radius:28px;
+
+    background:var(--glass-bg);
+
+    backdrop-filter:blur(var(--glass-blur));
+
+    border:1px solid var(--glass-border);
+
+    transition:0.35s ease;
+}
+
+.glass-panel:hover{
+    transform:translateY(-6px);
+
+    border-color:var(--primary);
+
+    box-shadow:
+    0 0 20px rgba(125,207,255,0.25);
+}
+
+.card-icon{
+    font-size:2.4rem;
+
+    margin-bottom:20px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.badge-ui{
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    border:1px solid var(--glass-border);
+
+    color:var(--primary);
+
+    font-size:11px;
+
+    margin-bottom:15px;
+
+    text-transform:uppercase;
+}
+
+h1,h2{
+    margin-bottom:15px;
+}
+
+p{
+    color:rgba(255,255,255,0.65);
+    line-height:1.7;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-primary-ui{
+    margin-top:20px;
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:black;
+}
+
+/* =========================
+   NEWS BAR
+========================= */
+
+.news-bar{
+    position:fixed;
+    bottom:0;
+    left:0;
+
+    width:100%;
+
+    padding:12px 0;
+
+    background:var(--glass-bg);
+
+    backdrop-filter:blur(var(--glass-blur));
+
+    border-top:1px solid var(--glass-border);
+
+    overflow:hidden;
+
+    z-index:999;
+}
+
+.ticker-text{
+    display:inline-block;
+
+    white-space:nowrap;
+
+    padding-left:100%;
+
+    animation:scroll 35s linear infinite;
+}
+
+.news-bar:hover .ticker-text{
+    animation-play-state:paused;
+}
+
+@keyframes scroll{
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-100%);
+    }
+}
+
+/* =========================
+   CURSOR GLOW
+========================= */
+
+#glow-cursor{
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(125,207,255,0.12) 0%,
+        transparent 70%
+    );
+
+    transform:translate(-50%,-50%);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">WEB4</div>
+
+    <div class="nav-links">
+
+        <a href="#main">Home</a>
+
+        <a href="#projects">Projects</a>
+
+        <a href="#news">News</a>
+
+        <a href="https://github.com/QUBUHUB-incs"
+           target="_blank"
+           rel="noopener noreferrer">
+
+           GitHub
+
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- PROJECTS -->
+
+<section id="projects" class="dashboard">
+
+    <div class="glass-panel">
+
+        <i class="fa-solid fa-microchip card-icon"></i>
+
+        <span class="badge-ui">System Online</span>
+
+        <h1>Core Engine</h1>
+
+        <p>
+            AI runtime environment initialized and operating normally.
+        </p>
+
+        <button class="btn-primary-ui">
+            Launch System
+        </button>
+
+    </div>
+
+    <div class="glass-panel">
+
+        <i class="fa-solid fa-code card-icon"></i>
+
+        <span class="badge-ui">Dev Ready</span>
+
+        <h2>Development Node</h2>
+
+        <p>
+            Workspace compiled successfully with active cloud sync.
+        </p>
+
+    </div>
+
+    <div class="glass-panel">
+
+        <i class="fa-solid fa-cloud-arrow-up card-icon"></i>
+
+        <span class="badge-ui">Deployment</span>
+
+        <h2>Cloud Sync</h2>
+
+        <p>
+            Infrastructure connected to distributed network systems.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- NEWS -->
+
+<section id="news" class="dashboard">
+
+    <div class="glass-panel">
+
+        <i class="fa-solid fa-newspaper card-icon"></i>
+
+        <span class="badge-ui">Live Feed</span>
+
+        <h2>Global Tech Intelligence</h2>
+
+        <div id="news-preview">
+
+            Loading headlines...
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- TICKER -->
+
+<div class="news-bar">
+
+    <div class="ticker-text" id="ticker-content">
+
+        Connecting to global servers...
+
+    </div>
+
+</div>
+
+<!-- CURSOR -->
+
+<div id="glow-cursor"></div>
+
+<!-- SCRIPTS -->
+
+<script>
+
+/* Cursor Glow */
+
+const glow = document.getElementById("glow-cursor");
+
+window.addEventListener("mousemove", e => {
+
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+
+});
+
+/* News Fetch */
+
+async function fetchNews(){
+
+    const ticker =
+    document.getElementById("ticker-content");
+
+    const preview =
+    document.getElementById("news-preview");
+
+    const rssUrl =
+    "https://www.theverge.com/rss/index.xml";
+
+    const apiUrl =
+    `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+
+    try{
+
+        const res = await fetch(apiUrl);
+
+        const data = await res.json();
+
+        if(data.status === "ok"){
+
+            const headlines =
+            data.items.map(item =>
+                `[ ${item.pubDate.split(" ")[0]} ] ${item.title}`
+            ).join(" ••• ");
+
+            ticker.innerHTML =
+            headlines + " ••• " + headlines;
+
+            preview.innerHTML =
+            data.items.slice(0,5)
+            .map(item =>
+                `<div style="margin-bottom:10px;">• ${item.title}</div>`
+            )
+            .join("");
+
+        }
+
+    }catch(err){
+
+        ticker.innerHTML =
+        "[ ERROR ] News sync failed.";
+
+        preview.innerHTML =
+        "Unable to load headlines.";
+
+    }
+
+}
+
+fetchNews();
+
+setInterval(fetchNews,600000);
+
+</script>
+
+<!-- External Scripts -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
 </html>
